@@ -1,0 +1,4 @@
+aiogram==2.25.1
+bs4==0.0.1
+Django==5.0
+requests==2.31.0
