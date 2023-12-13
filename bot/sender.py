@@ -19,8 +19,7 @@ async def subscribes_sender(bot: Bot):
             subscribe_timedelta = timedelta(hours=subscribe.time.hour,
                                             minutes=subscribe.time.minute,
                                             seconds=subscribe.time.second)
-            if ((current_time.date() > subscribe.last_date_check) and
-                    abs(current_timedelta - subscribe_timedelta) < timedelta(minutes=1)):
+            if current_time.date() > subscribe.last_date_check and current_timedelta > subscribe_timedelta:
                 subscribe.last_date_check = current_time.date()
                 subscribe.save()
                 await bot.send_message(subscribe.chat_id, get_holidays_text())
