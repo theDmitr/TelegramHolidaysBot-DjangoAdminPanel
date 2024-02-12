@@ -12,14 +12,10 @@ async def subscribes_sender(bot: Bot):
     while True:
         subscribes = Subscribe.objects.get_queryset()
         current_time = timezone.now()
-        current_timedelta = timedelta(hours=current_time.hour,
-                                      minutes=current_time.minute,
-                                      seconds=current_time.second)
         for subscribe in subscribes:
-            subscribe_timedelta = timedelta(hours=subscribe.time.hour,
-                                            minutes=subscribe.time.minute,
-                                            seconds=subscribe.time.second)
-            if current_time.date() > subscribe.last_date_check and current_timedelta > subscribe_timedelta:
+            if (current_time.date() > subscribe.last_date_check and
+                    current_time.hour == subscribe.time.hour and
+                    current_time.minute == subscribe.time.minute):
                 subscribe.last_date_check = current_time.date()
                 subscribe.save()
                 await bot.send_message(subscribe.chat_id, get_holidays_text())
