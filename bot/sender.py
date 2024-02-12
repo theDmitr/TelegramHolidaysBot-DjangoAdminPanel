@@ -1,5 +1,4 @@
 import asyncio
-from datetime import timedelta
 
 from aiogram import Bot
 
@@ -12,6 +11,7 @@ async def subscribes_sender(bot: Bot):
     while True:
         subscribes = Subscribe.objects.get_queryset()
         current_time = timezone.now()
+        print(current_time)
         for subscribe in subscribes:
             if (current_time.date() > subscribe.last_date_check and
                     current_time.hour == subscribe.time.hour and
