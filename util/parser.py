@@ -1,9 +1,7 @@
-from datetime import datetime
-
 import requests
 from bs4 import BeautifulSoup
 
-holidays_site_url = 'https://www.rusevents.ru/date/'
+holidays_site_url = 'https://celebratoday.com/ru'
 
 
 def remove_all_tags(soup: BeautifulSoup, tags: list):
@@ -11,10 +9,8 @@ def remove_all_tags(soup: BeautifulSoup, tags: list):
         data.decompose()
 
 
-def get_holidays(date: datetime.date = datetime.today().date()):
-    str_date = date.strftime("%d.%m")
-    page_str = requests.get(holidays_site_url + str_date).text
+def get_holidays():
+    page_str = requests.get(holidays_site_url).text
     soup = BeautifulSoup(page_str, 'html.parser')
-    remove_all_tags(soup, ['span'])
-    titles = soup.find_all(attrs={'class': 'title'})
-    return [title.text.strip() for title in titles]
+    spans = soup.find_all('section', {'class': 'grid gap-8'})[0].find_all('span', {'class': 'text-xl font-bold hover:underline'})
+    return [s.get_text() for s in spans]
